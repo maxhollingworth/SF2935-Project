@@ -19,7 +19,6 @@ def splittingData(data):
     return testData, testLabel, trainData, trainLabel
 
 if __name__ == '__main__':
-    print('HEj')
     data=readCSV()
     testData, testLabel, trainData, trainLabel = splittingData(data)
     clf=RandomForestClassifier()
