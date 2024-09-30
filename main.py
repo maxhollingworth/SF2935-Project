@@ -22,7 +22,7 @@ def splittingData(data):
 
 def randomForest(testData,testLabel,trainData,trainLabel):
     #clf = RandomForestClassifier()
-    clf = RandomForestClassifier(n_estimators=100,
+    clf = RandomForestClassifier(n_estimators=1000,
             criterion = 'gini',
             max_depth = None,
             min_samples_split = 2,
@@ -71,7 +71,7 @@ def logisticRegression(testData, testLabel, trainData, trainLabel):
     return testAcc, trainAcc
 
 def neuralNetworkClassifier(testData, testLabel, trainData, trainLabel):
-    clf = MLPClassifier(hidden_layer_sizes=(10,),
+    clf = MLPClassifier(hidden_layer_sizes=(50,50,10),
                         activation='relu',
                         solver='adam',
                         alpha=0.0001,
@@ -79,7 +79,7 @@ def neuralNetworkClassifier(testData, testLabel, trainData, trainLabel):
                         learning_rate='constant',
                         learning_rate_init=0.001,
                         power_t=0.5,
-                        max_iter=500,
+                        max_iter=10000,
                         shuffle=True,
                         random_state=None,
                         tol=0.0001,
@@ -127,7 +127,7 @@ if __name__ == '__main__':
     testAccVec=np.array([])
     trainAccVec=np.array([])
     #For running several times just to get some sort of "average" accuracy
-    for i in range(0,1):
+    for i in range(0,100):
         testData, testLabel, trainData, trainLabel = splittingData(data)
         testAcc,trainAcc=neuralNetworkClassifier(testData, testLabel, trainData, trainLabel)
         testAccVec=np.append(testAccVec,testAcc)
