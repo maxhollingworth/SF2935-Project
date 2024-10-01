@@ -12,21 +12,20 @@ from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_sc
 
 # Load the data
 trainData = pd.read_csv('project_train.csv')
-testData= pd.read_csv('project_test.csv')
+testData = pd.read_csv('project_test.csv')
 
 # Preprocess the data
 X = trainData.drop('Label', axis=1)
 y = trainData['Label']
 
 # Split the data
-
-
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=70)
 
 # Standardize the features
 scaler = StandardScaler()
 X_train = scaler.fit_transform(X_train)
 X_test = scaler.transform(X_test)
+x_testFINAL = scaler.transform(testData)
 
 # Define classifiers
 classifiers = {
@@ -49,23 +48,24 @@ classifiers = {
     }
 
 # Evaluate classifiers
-results = {}
+resultsTrain = {}
 
 for name, clf in classifiers.items():
     clf.fit(X_train, y_train)
     y_pred = clf.predict(X_test)
     y_proba = clf.predict_proba(X_test)[:, 1]
-    results[name] = {
+    resultsTrain[name] = {
         'Accuracy': accuracy_score(y_test,y_pred),
         'Precision': precision_score(y_test, y_pred),
         'Recall': recall_score(y_test, y_pred),
         'F1 Score': f1_score(y_test, y_pred),
-        'ROC AUC': roc_auc_score(y_test, y_proba)
+        'ROC AUC': roc_auc_score(y_test, y_proba),
+        'Prediction': clf.predict(x_testFINAL)
     }
 
-# Print results
-for name, metrics in results.items():
+# Print resultsTrain
+for name, metrics in resultsTrain.items():
     print(f"{name}:")
     for metric, value in metrics.items():
-        print(f"  {metric}: {value:.4f}")
+        print(metric," :", value)
     print()
