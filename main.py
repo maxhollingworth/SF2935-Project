@@ -1,6 +1,5 @@
 import pandas as pd
 from sklearn.model_selection import train_test_split
-import numpy as np
 from sklearn.preprocessing import StandardScaler
 from sklearn.linear_model import LogisticRegression
 from sklearn.ensemble import RandomForestClassifier
@@ -34,7 +33,7 @@ classifiers = {
     'Random Forest': RandomForestClassifier(n_estimators=1000,
                                                 min_samples_split = 8,
                                                 min_samples_leaf = 2,
-                                                random_state = 42,),
+                                                random_state = 42),
     'SVM': SVC(probability=True,
                max_iter=1000,
                random_state=42),
@@ -53,6 +52,7 @@ resultsTrain = {}
 for name, clf in classifiers.items():
     clf.fit(X_train, y_train)
     y_pred = clf.predict(X_test)
+    y_predTrain= clf.predict(X_train)
     y_proba = clf.predict_proba(X_test)[:, 1]
     resultsTrain[name] = {
         'Accuracy': accuracy_score(y_test,y_pred),
@@ -60,7 +60,8 @@ for name, clf in classifiers.items():
         'Recall': recall_score(y_test, y_pred),
         'F1 Score': f1_score(y_test, y_pred),
         'ROC AUC': roc_auc_score(y_test, y_proba),
-        'Prediction': clf.predict(x_testFINAL)
+        'Prediction': clf.predict(x_testFINAL),
+        'AccuracyOnTraining': accuracy_score(y_train, y_predTrain),
     }
 
 # Print resultsTrain
